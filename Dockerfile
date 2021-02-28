@@ -9,7 +9,8 @@ RUN \
     yum upgrade -y && \
     yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
     yum install -y dnf-plugins-core && \
-    yum config-manager --set-enabled PowerTools && \
+    yum config-manager --set-enabled powertools && \
+    yum -y --enablerepo=powertools install elinks && \
     yum clean all
 
 ## --- PHP EXTENTIONS ---
@@ -28,6 +29,12 @@ RUN \
         bison openssl openldap mod_ssl net-snmp-libs automake \
         gcc gzip libtool make net-snmp-devel dos2unix m4 which \
         openssl-devel mariadb-devel sendmail curl wget help2man fping && \
+    yum clean all
+
+## --- Other/Requests ---
+RUN \
+    yum install -y \
+        perl-libwww-perl && \
     yum clean all
 
 ## --- SERVICE CONFIGS ---
@@ -68,6 +75,7 @@ ENV \
     RDB_PASS=cactipassword \
     RDB_HOST=localhost \
     RDB_PORT=3306 \
+    CACTI_URL_PATH=cacti \
     BACKUP_RETENTION=7 \
     BACKUP_TIME=0 \
     REMOTE_POLLER=0 \
